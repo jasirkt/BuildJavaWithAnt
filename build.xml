@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<project name="BuildJavaWithAnt" default="junit-execute">
+	<property name="main.src.dir" location="src/main" />
+	<property name="main.build.dir" location="build/main" />
+	<property name="main.lib.dir" location="lib/main" />
+	<property name="test.src.dir" location="src/test" />
+	<property name="test.build.dir" location="build/test" />
+	<property name="test.lib.dir" location="lib/test" />
+
+	<path id="test.classpath">
+		<pathelement location="${test.lib.dir}/junit-4.12.jar" />
+		<pathelement location="${test.lib.dir}/hamcrest-core-1.3.jar" />
+		<pathelement location="${main.build.dir}" />
+	</path>
+
+	<target name="clean">
+		<delete dir="${main.build.dir}" />
+		<delete dir="${test.build.dir}" />
+	</target>
+
+	<target name="compile" depends="clean">
+		<mkdir dir="${main.build.dir}" />
+		<javac srcdir="${main.src.dir}" destdir="${main.build.dir}" includeantruntime="false" />
+	</target>
+
+	<target name="junit-compile" depends="compile">
+		<mkdir dir="${test.build.dir}" />
+		<javac srcdir="${test.src.dir}" destdir="${test.build.dir}" includeantruntime="false">
+			<classpath refid="test.classpath" />
+		</javac>
+	</target>
+
+	<!--
+		haltonfailure="false" tells ant to continue build even if an test case fails.
+		fork="true" causes the task to run in a different process, and a different Java virtual machine.
+	-->
+	<target name="junit-execute">
+	    <junit printsummary="on" haltonfailure="false" fork="false">
+			<classpath>
+				<path refid="test.classpath"/>
+				<pathelement location="${test.build.dir}"/>
+			</classpath>
+			<formatter type="failure" usefile="true" />
+			<batchtest>
+				<fileset dir="${test.src.dir}" />
+			</batchtest>
+		</junit>
+	</target>
+
+</project>
