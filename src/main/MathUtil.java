@@ -1,4 +1,4 @@
-public class Message {
+public class MathUtil {
 	public int add(int a, int b) {
 		return a + b;
 	}
