@@ -34,13 +34,13 @@
 		haltonfailure="false" tells ant to continue build even if an test case fails.
 		fork="true" causes the task to run in a different process, and a different Java virtual machine.
 	-->
-	<target name="junit-execute">
+	<target name="junit-execute" depends="junit-compile">
 	    <junit printsummary="on" haltonfailure="false" fork="false">
 			<classpath>
 				<path refid="test.classpath"/>
 				<pathelement location="${test.build.dir}"/>
 			</classpath>
-			<formatter type="failure" usefile="true" />
+			<formatter type="xml" usefile="true" />
 			<batchtest>
 				<fileset dir="${test.src.dir}" />
 			</batchtest>
