@@ -6,6 +6,7 @@
 	<property name="test.src.dir" location="src/test" />
 	<property name="test.build.dir" location="build/test" />
 	<property name="test.lib.dir" location="lib/test" />
+	<property name="dist.dir" location="dist" />
 
 	<path id="test.classpath">
 		<pathelement location="${test.lib.dir}/junit-4.12.jar" />
@@ -16,6 +17,7 @@
 	<target name="clean">
 		<delete dir="${main.build.dir}" />
 		<delete dir="${test.build.dir}" />
+		<delete dir="${dist.dir}" />
 	</target>
 
 	<target name="compile" depends="clean">
@@ -45,6 +47,15 @@
 				<fileset dir="${test.src.dir}" />
 			</batchtest>
 		</junit>
+	</target>
+	
+	<target name="jar" depends="compile">
+		<mkdir dir="${dist.dir}" />
+		<jar destfile="${dist.dir}/myjarfile.jar" basedir="${main.build.dir}">
+			<manifest>
+				<attribute name="Main-Class" value="HelloWorld"/>
+			</manifest>
+		</jar>
 	</target>
 
 </project>
